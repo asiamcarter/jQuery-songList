@@ -12,19 +12,9 @@ $(document).ready(function() {
         the button is clicked, use $.ajax() to load `songs.json`
         from the file system
     */
-    $("#load-songs").click (function() {
-        $.ajax({
-            url: "http://localhost:8088/songs",
-            type: "GET",
-            success: function (song) {
-                console.log(song)
-            }
-        })
+})
 
-
-    })
-
-    /*
+   /*
         Chain a `.then()` method to the ajax call, and when
         it is complete build a DOM component for each song with
         the following structure. Use the jQuery append() method
@@ -37,5 +27,27 @@ $(document).ready(function() {
                     Performed by {artist} on the album {album}
                 </section>
             </section>
+
     */
-})
+
+//element in the .each function can also be omitted and "this" can be used to access values within the ojects
+    $("#load-songs").click (function() {
+
+        return $.getJSON("http://localhost:8088/songs").then(function(song){
+           $(song).each(function(index, element) {
+              $("#song-list").append(`<section class="song">
+              <h1 class="song__title">${this.title}</h1>
+              <section class="song__description">
+                  Performed by ${element.artist} on the album ${element.album}
+              </section>
+          </section>
+`)
+           })
+    })
+    })
+
+
+
+
+
+
